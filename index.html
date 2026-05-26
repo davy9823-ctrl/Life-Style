@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Davy — Lifestyle</title>
+<style>
+  :root {
+    --glass: rgba(255,255,255,0.10);
+    --glass-strong: rgba(255,255,255,0.16);
+    --border: rgba(255,255,255,0.18);
+    --border-soft: rgba(255,255,255,0.10);
+    --shadow: 0 8px 32px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.18) inset;
+    --t1: rgba(255,255,255,0.96);
+    --t2: rgba(255,255,255,0.60);
+    --t3: rgba(255,255,255,0.35);
+    --blue: #3B82F6;
+    --blue-bg: rgba(59,130,246,0.15);
+    --green: #34D399;
+    --green-bg: rgba(52,211,153,0.12);
+    --amber: #FBBF24;
+    --amber-bg: rgba(251,191,36,0.12);
+    --red: #F87171;
+    --red-bg: rgba(248,113,113,0.10);
+    --purple: #A78BFA;
+    --purple-bg: rgba(167,139,250,0.12);
+    --r-sm: 12px; --r-md: 18px; --r-lg: 24px; --r-xl: 32px; --r-full: 9999px;
+    --font: -apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,sans-serif;
+    --blur: blur(28px) saturate(180%);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:16px;-webkit-font-smoothing:antialiased;}
+  body{font-family:var(--font);background:#000;color:var(--t1);min-height:100vh;overflow-x:hidden;}
+
+  .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 70% at 15% 10%,#1a3a6e,transparent 60%),radial-gradient(ellipse 60% 60% at 85% 20%,#0d2a4a,transparent 55%),radial-gradient(ellipse 70% 80% at 50% 90%,#0c1f3a,transparent 65%),#050e1a;}
+  .orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.5;z-index:0;animation:fl 12s ease-in-out infinite;}
+  .o1{width:500px;height:500px;background:radial-gradient(circle,#1d4ed8,transparent 70%);top:-100px;left:-80px;}
+  .o2{width:380px;height:380px;background:radial-gradient(circle,#0e7490,transparent 70%);top:30%;right:-80px;animation-delay:-4s;}
+  .o3{width:340px;height:340px;background:radial-gradient(circle,#1e3a5f,transparent 70%);bottom:5%;left:15%;animation-delay:-8s;}
+  @keyframes fl{0%,100%{transform:translate(0,0);}33%{transform:translate(25px,-18px);}66%{transform:translate(-18px,12px);}}
+
+  .shell{position:relative;z-index:1;max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:90px;}
+
+  /* HEADER */
+  .hdr{position:sticky;top:0;z-index:100;padding:16px 20px 14px;background:rgba(5,14,26,0.55);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;}
+  .hdr-txt .greeting{font-size:22px;font-weight:600;letter-spacing:-.5px;}
+  .hdr-txt .sub{font-size:12px;color:var(--t2);}
+  .av-btn{position:relative;width:44px;height:44px;cursor:pointer;}
+  .av-c{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(59,130,246,.5),rgba(14,116,144,.5));border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;overflow:hidden;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);}
+  .av-c img{width:100%;height:100%;object-fit:cover;}
+  .av-cam{position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-radius:50%;background:var(--blue);border:1.5px solid rgba(5,14,26,.8);display:flex;align-items:center;justify-content:center;}
+  .av-cam svg{width:9px;height:9px;fill:#fff;}
+
+  /* CONTENT */
+  .content{padding:16px;}
+  .sec{display:none;}
+  .sec.active{display:block;animation:fu .28s ease;}
+  @keyframes fu{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* CARD */
+  .card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--border-soft);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px;margin-bottom:14px;overflow:hidden;}
+  .clabel{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--t3);margin-bottom:14px;}
+
+  /* PROFILE */
+  .prof-hero{padding:32px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+  .prof-hero::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.15),transparent 70%);pointer-events:none;}
+  .pav-wrap{position:relative;width:96px;height:96px;cursor:pointer;margin-bottom:16px;}
+  .pav{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,rgba(59,130,246,.4),rgba(14,116,144,.4));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;overflow:hidden;box-shadow:0 0 0 6px rgba(255,255,255,.05),var(--shadow);}
+  .pav img{width:100%;height:100%;object-fit:cover;}
+  .pcam{position:absolute;bottom:2px;right:2px;width:28px;height:28px;border-radius:50%;background:rgba(59,130,246,.88);border:2px solid rgba(5,14,26,.6);display:flex;align-items:center;justify-content:center;}
+  .pcam svg{width:12px;height:12px;fill:#fff;}
+  .pname{font-size:26px;font-weight:600;letter-spacing:-.5px;margin-bottom:4px;}
+  .psub{font-size:14px;color:var(--t2);}
+  .phint{font-size:13px;color:var(--blue);margin-top:8px;cursor:pointer;}
+  .premove{font-size:12px;color:var(--t3);margin-top:4px;cursor:pointer;background:none;border:none;color:var(--t3);display:none;font-family:var(--font);}
+
+  /* METRICS */
+  .mets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px;}
+  .met{background:rgba(255,255,255,.07);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:14px;}
+  .met-l{font-size:11px;color:var(--t3);margin-bottom:5px;}
+  .met-v{font-size:24px;font-weight:600;letter-spacing:-.5px;}
+  .met-u{font-size:13px;font-weight:400;color:var(--t2);}
+
+  /* ALERT */
+  .alert{border-radius:var(--r-md);padding:13px 14px;margin-bottom:12px;border-left:3px solid transparent;}
+  .alert.blue{background:rgba(59,130,246,.12);border-left-color:rgba(59,130,246,.7);}
+  .alert.green{background:rgba(52,211,153,.10);border-left-color:rgba(52,211,153,.7);}
+  .alert.amber{background:rgba(251,191,36,.10);border-left-color:rgba(251,191,36,.7);}
+  .alert.red{background:rgba(248,113,113,.10);border-left-color:rgba(248,113,113,.7);}
+  .alert-t{font-size:13px;font-weight:600;margin-bottom:3px;}
+  .alert.blue .alert-t{color:#93C5FD;}.alert.green .alert-t{color:#6EE7B7;}.alert.amber .alert-t{color:#FDE68A;}.alert.red .alert-t{color:#FCA5A5;}
+  .alert-b{font-size:12px;color:var(--t2);line-height:1.55;}
+
+  /* LIST */
+  .li{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .li:last-child{border-bottom:none;padding-bottom:0;}
+  .lic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .lic.blue{background:rgba(59,130,246,.18);}.lic.green{background:rgba(52,211,153,.15);}.lic.amber{background:rgba(251,191,36,.15);}.lic.purple{background:rgba(167,139,250,.15);}.lic.coral{background:rgba(248,113,113,.12);}
+  .lid strong{font-size:14px;font-weight:500;color:var(--t1);display:block;margin-bottom:2px;}
+  .lid span{font-size:12px;color:var(--t2);line-height:1.45;}
+
+  /* TAGS */
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+  .tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:var(--r-full);border:1px solid transparent;}
+  .tag.blue{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.3);color:#93C5FD;}
+  .tag.green{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.28);color:#6EE7B7;}
+  .tag.amber{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.28);color:#FDE68A;}
+  .tag.purple{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.28);color:#C4B5FD;}
+  .tag.coral{background:rgba(248,113,113,.10);border-color:rgba(248,113,113,.25);color:#FCA5A5;}
+
+  /* BUTTONS */
+  .btn{display:block;width:100%;padding:14px;border-radius:var(--r-md);border:none;font-family:var(--font);font-size:15px;font-weight:500;cursor:pointer;text-align:center;margin-bottom:8px;transition:transform .12s,opacity .12s;-webkit-tap-highlight-color:transparent;}
+  .btn:active{transform:scale(.97);opacity:.85;}
+  .btn-p{background:rgba(59,130,246,.75);backdrop-filter:var(--blur);border:1px solid rgba(59,130,246,.5);color:#fff;box-shadow:0 4px 20px rgba(59,130,246,.25);}
+  .btn-g{background:rgba(255,255,255,.10);backdrop-filter:var(--blur);border:1px solid var(--border-soft);color:var(--t1);}
+
+  /* PROGRESS */
+  .prow{margin-bottom:12px;}
+  .plbl{display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:6px;}
+  .ptrack{height:5px;background:rgba(255,255,255,.10);border-radius:3px;overflow:hidden;}
+  .pfill{height:100%;border-radius:3px;transition:width .6s ease;}
+
+  /* DAYS */
+  .drow{display:flex;gap:7px;margin-bottom:14px;}
+  .dd{flex:1;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;}
+  .dd.done{background:rgba(59,130,246,.75);color:#fff;border:1px solid rgba(59,130,246,.5);}
+  .dd.today{background:rgba(255,255,255,.08);color:#93C5FD;border:1.5px solid rgba(59,130,246,.6);}
+  .dd.rest{background:rgba(255,255,255,.06);color:var(--t3);border:1px solid rgba(255,255,255,.10);}
+
+  /* RING */
+  .imc-row{display:flex;align-items:center;gap:18px;margin-bottom:14px;}
+  .ring-w{position:relative;width:76px;height:76px;flex-shrink:0;}
+  .ring-w svg{transform:rotate(-90deg);}
+  .ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring-v{font-size:16px;font-weight:600;}.ring-u{font-size:9px;color:var(--t3);}
+  .ring-i strong{font-size:17px;font-weight:600;display:block;margin-bottom:3px;}
+  .ring-i span{font-size:12px;color:var(--t2);display:block;line-height:1.5;}
+
+  /* CHECK */
+  .crow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:pointer;}
+  .crow:last-child{border-bottom:none;}
+  .ccirc{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+  .ccirc.done{background:rgba(52,211,153,.75);border-color:transparent;}
+  .ccirc svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none;display:none;}
+  .ccirc.done svg{display:block;}
+  .ctxt{font-size:13px;color:var(--t1);line-height:1.4;}
+  .ctxt.done{color:var(--t3);text-decoration:line-through;}
+
+  /* MOOD */
+  .mood-row{display:flex;gap:8px;margin-bottom:14px;}
+  .mb{flex:1;padding:11px 4px;border-radius:var(--r-md);border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);font-size:20px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+  .mb.sel{border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.15);transform:scale(1.05);}
+
+  /* FINANCE BAR */
+  .fbar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:10px 0 8px;gap:2px;}
+  .fbar div{border-radius:2px;}
+  .fleg{display:flex;flex-wrap:wrap;gap:10px;}
+  .fli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2);}
+  .fld{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+  /* COUPLE */
+  .cpi{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .cpi:last-child{border-bottom:none;padding-bottom:0;}
+  .cpn{width:28px;height:28px;border-radius:50%;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#FDE68A;flex-shrink:0;}
+  .cpi strong{font-size:14px;font-weight:500;color:var(--t1);display:block;margin-bottom:2px;}
+  .cpi span{font-size:12px;color:var(--t2);line-height:1.45;}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;}
+  .modal-bg.open{display:flex;}
+  .modal{background:rgba(15,25,45,.92);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--border);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;max-width:430px;max-height:82vh;overflow-y:auto;padding:24px 20px 40px;animation:slideUp .3s ease;}
+  @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .modal-handle{width:36px;height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin:0 auto 20px;}
+  .modal-title{font-size:20px;font-weight:600;letter-spacing:-.4px;margin-bottom:16px;}
+  .modal-close{position:absolute;top:20px;right:20px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:var(--t2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--font);}
+  .modal-section{margin-bottom:20px;}
+  .modal-section h3{font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+  .modal-item{background:rgba(255,255,255,.07);border-radius:var(--r-md);padding:14px;margin-bottom:8px;}
+  .modal-item strong{font-size:14px;font-weight:500;color:var(--t1);display:block;margin-bottom:4px;}
+  .modal-item p{font-size:13px;color:var(--t2);line-height:1.55;}
+  .modal-item .detail{font-size:12px;color:var(--t3);margin-top:6px;line-height:1.5;}
+  .day-plan{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px;}
+  .day-card{background:rgba(255,255,255,.07);border-radius:var(--r-md);padding:12px;}
+  .day-card .dc-day{font-size:11px;color:var(--t3);margin-bottom:4px;}
+  .day-card .dc-title{font-size:13px;font-weight:500;color:var(--t1);}
+  .day-card .dc-sub{font-size:11px;color:var(--t2);margin-top:3px;line-height:1.4;}
+  .food-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .food-row:last-child{border-bottom:none;}
+  .food-name{font-size:13px;font-weight:500;color:var(--t1);}
+  .food-cal{font-size:12px;color:var(--t3);}
+  .food-macro{font-size:11px;color:var(--t2);margin-top:1px;}
+  .tip-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:var(--r-md);padding:13px;margin-bottom:8px;}
+  .tip-box p{font-size:13px;color:var(--t2);line-height:1.55;}
+  .fin-input-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .fin-input-row label{font-size:12px;color:var(--t3);}
+  .fin-input{background:rgba(255,255,255,.08);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:12px 14px;color:var(--t1);font-size:15px;font-family:var(--font);width:100%;}
+  .fin-input:focus{outline:none;border-color:rgba(59,130,246,.5);}
+  .fin-result{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:var(--r-md);padding:14px;margin-top:8px;}
+  .fin-result .fr-label{font-size:12px;color:#6EE7B7;margin-bottom:4px;}
+  .fin-result .fr-val{font-size:22px;font-weight:600;color:#6EE7B7;}
+  .strat-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .strat-item:last-child{border-bottom:none;}
+  .strat-num{width:26px;height:26px;border-radius:50%;background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#C4B5FD;flex-shrink:0;}
+
+  /* NAV */
+  .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(5,14,26,.72);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-top:1px solid var(--border-soft);display:flex;padding:10px 0 20px;z-index:100;}
+  .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0;border:none;background:none;-webkit-tap-highlight-color:transparent;}
+  .ni-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;}
+  .ni.active .ni-icon{background:rgba(59,130,246,.2);}
+  .ni svg{width:20px;height:20px;stroke:var(--t3);stroke-width:1.8;fill:none;transition:stroke .2s;}
+  .ni.active svg{stroke:#93C5FD;}
+  .ni-lbl{font-size:10px;color:var(--t3);transition:color .2s;}
+  .ni.active .ni-lbl{color:#93C5FD;}
+
+  input[type=file]{display:none;}
+  ::-webkit-scrollbar{width:0;}
+</style>
+</head>
+<body>
+<div class="bg"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+
+<div class="shell">
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-txt"><div class="greeting">Olá, Davy</div><div class="sub">Semana 1 · Recuperação ativa</div></div>
+    <div class="av-btn" onclick="document.getElementById('phi').click()">
+      <div class="av-c" id="av-h"><span>DV</span></div>
+      <div class="av-cam"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+    </div>
+    <input type="file" id="phi" accept="image/*" onchange="handlePhoto(event)">
+  </header>
+
+  <main class="content">
+
+    <!-- PERFIL -->
+    <section class="sec active" id="sec-perfil">
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="prof-hero">
+          <div class="pav-wrap" onclick="document.getElementById('ppi').click()">
+            <div class="pav" id="av-p"><span>DV</span></div>
+            <div class="pcam"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          </div>
+          <input type="file" id="ppi" accept="image/*" onchange="handlePhoto(event)">
+          <div class="pname">Davy</div>
+          <div class="psub">28 anos · 100 kg · 1,85 m</div>
+          <div class="phint" id="phint" onclick="document.getElementById('ppi').click()">Adicionar foto de perfil</div>
+          <button class="premove" id="prem" onclick="removePhoto()">Remover foto</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="clabel">Saúde</div>
+        <div class="mets">
+          <div class="met"><div class="met-l">IMC</div><div class="met-v">29,2</div></div>
+          <div class="met"><div class="met-l">Classificação</div><div class="met-v" style="font-size:15px;padding-top:5px;">Sobrepeso</div></div>
+          <div class="met"><div class="met-l">Meta de peso</div><div class="met-v">85<span class="met-u"> kg</span></div></div>
+          <div class="met"><div class="met-l">A perder</div><div class="met-v">15<span class="met-u"> kg</span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="clabel">Histórico</div>
+        <div class="li"><div class="lic amber">🦴</div><div class="lid"><strong>Artroplastia</strong><span>Pós-artronecrose. Fisioterapia concluída — 24 sessões.</span><div class="tags"><span class="tag green">Concluído</span><span class="tag amber">Em manutenção</span></div></div></div>
+        <div class="li"><div class="lic blue">🏃</div><div class="lid"><strong>Atividade física</strong><span>Sedentário — retorno gradual à academia Patteo.</span><div class="tags"><span class="tag blue">Fase 1</span></div></div></div>
+        <div class="li"><div class="lic green">🥗</div><div class="lid"><strong>Alimentação</strong><span>Sem restrições. Déficit calórico controlado.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Objetivos de vida</div>
+        <div class="li"><div class="lic blue">🏠</div><div class="lid"><strong>Apartamento próprio</strong><span>Planejando entrada para compra em Olinda / Recife.</span></div></div>
+        <div class="li"><div class="lic purple">💼</div><div class="lid"><strong>Nova fase profissional</strong><span>Desenvolvimento do setor digital — nova função.</span></div></div>
+        <div class="li"><div class="lic coral">❤️</div><div class="lid"><strong>Morar com Maria Luiza</strong><span>Objetivo de médio prazo após estabilização financeira.</span></div></div>
+      </div>
+    </section>
+
+    <!-- TREINO -->
+    <section class="sec" id="sec-treino">
+      <div class="card">
+        <div class="clabel">Perfil físico</div>
+        <div class="imc-row">
+          <div class="ring-w">
+            <svg width="76" height="76" viewBox="0 0 76 76">
+              <circle cx="38" cy="38" r="30" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>
+              <circle cx="38" cy="38" r="30" fill="none" stroke="rgba(248,113,113,.7)" stroke-width="8" stroke-dasharray="188 188" stroke-dashoffset="47" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-c"><div class="ring-v">29,2</div><div class="ring-u">IMC</div></div>
+          </div>
+          <div class="ring-i"><strong>Sobrepeso leve</strong><span>100 kg · 1,85 m · 28 anos</span><span style="color:var(--t3);font-size:11px;">Meta: 85–90 kg</span></div>
+        </div>
+        <div class="alert amber"><div class="alert-t">⚠ Artroplastia recente</div><div class="alert-b">Fisioterapia encerrada. Fase de transição — evitar impacto articular.</div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Semana atual</div>
+        <div class="drow">
+          <div class="dd done">S</div><div class="dd done">T</div><div class="dd today">Q</div>
+          <div class="dd rest">Q</div><div class="dd rest">S</div><div class="dd rest">S</div><div class="dd rest">D</div>
+        </div>
+        <div class="prow"><div class="plbl"><span>Sessões na semana</span><span>2 / 4</span></div><div class="ptrack"><div class="pfill" style="width:50%;background:rgba(59,130,246,.7);"></div></div></div>
+        <button class="btn btn-p" onclick="openModal('modal-treino')">Ver plano de treino completo</button>
+      </div>
+    </section>
+
+    <!-- NUTRIÇÃO -->
+    <section class="sec" id="sec-nutri">
+      <div class="card">
+        <div class="clabel">Calorias diárias</div>
+        <div class="mets">
+          <div class="met"><div class="met-l">Alvo</div><div class="met-v">2.050<span class="met-u"> kcal</span></div></div>
+          <div class="met"><div class="met-l">Proteína</div><div class="met-v">150<span class="met-u"> g</span></div></div>
+          <div class="met"><div class="met-l">Carboidratos</div><div class="met-v">230<span class="met-u"> g</span></div></div>
+          <div class="met"><div class="met-l">Gorduras</div><div class="met-v">60<span class="met-u"> g</span></div></div>
+        </div>
+        <div class="alert green"><div class="alert-t">Déficit controlado</div><div class="alert-b">Meta de 0,5–1 kg/semana sem comprometer recuperação articular.</div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Refeições de hoje</div>
+        <div class="prow"><div class="plbl"><span>Café da manhã</span><span>500 kcal ✓</span></div><div class="ptrack"><div class="pfill" style="width:100%;background:rgba(52,211,153,.6);"></div></div></div>
+        <div class="prow"><div class="plbl"><span>Almoço</span><span>700 kcal ✓</span></div><div class="ptrack"><div class="pfill" style="width:100%;background:rgba(52,211,153,.6);"></div></div></div>
+        <div class="prow"><div class="plbl"><span>Lanche</span><span>300 kcal</span></div><div class="ptrack"><div class="pfill" style="width:50%;background:rgba(251,191,36,.6);"></div></div></div>
+        <div class="prow"><div class="plbl"><span>Jantar</span><span>—</span></div><div class="ptrack"><div class="pfill" style="width:0%;"></div></div></div>
+        <button class="btn btn-p" onclick="openModal('modal-nutri')">Ver cardápio da semana</button>
+      </div>
+    </section>
+
+    <!-- FISIO -->
+    <section class="sec" id="sec-fisio">
+      <div class="card">
+        <div class="clabel">Status pós-artroplastia</div>
+        <div class="alert green"><div class="alert-t">✓ Fisioterapia concluída — 24 sessões</div><div class="alert-b">Fase de manutenção e fortalecimento progressivo.</div></div>
+        <div class="mets">
+          <div class="met"><div class="met-l">Fase atual</div><div class="met-v" style="font-size:15px;padding-top:5px;">Transição</div></div>
+          <div class="met"><div class="met-l">Próxima revisão</div><div class="met-v" style="font-size:15px;padding-top:5px;">30 dias</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="clabel">Manutenção diária</div>
+        <div class="crow" onclick="toggleCheck(this)"><div class="ccirc"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="ctxt">Mobilização articular suave — 5 min</span></div>
+        <div class="crow" onclick="toggleCheck(this)"><div class="ccirc"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="ctxt">Fortalecimento do quadríceps — 3×15</span></div>
+        <div class="crow" onclick="toggleCheck(this)"><div class="ccirc"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="ctxt">Alongamento cadeia posterior — 3×30s</span></div>
+        <div class="crow" onclick="toggleCheck(this)"><div class="ccirc"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="ctxt">Equilíbrio unipodal — 3×20s cada perna</span></div>
+        <div class="crow" onclick="toggleCheck(this)"><div class="ccirc"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="ctxt">Crioterapia se sentir inchaço</span></div>
+        <button class="btn btn-g" style="margin-top:12px;" onclick="openModal('modal-fisio')">Como executar os exercícios</button>
+      </div>
+      <div class="card">
+        <div class="clabel">Sinais de alerta</div>
+        <div class="li"><div class="lic coral">⚠️</div><div class="lid"><strong>Dor aguda ou súbita</strong><span>Diferente da dor muscular normal.</span></div></div>
+        <div class="li"><div class="lic coral">⚠️</div><div class="lid"><strong>Inchaço com calor local</strong><span>Processo inflamatório — consulte médico.</span></div></div>
+        <div class="li"><div class="lic coral">⚠️</div><div class="lid"><strong>Amplitude que piora</strong><span>Mobilidade que regride é sinal de alerta.</span></div></div>
+      </div>
+    </section>
+
+    <!-- MENTAL -->
+    <section class="sec" id="sec-mental">
+      <div class="card">
+        <div class="clabel">Como você está hoje?</div>
+        <div class="mood-row">
+          <div class="mb" onclick="selectMood(this)">😊</div>
+          <div class="mb" onclick="selectMood(this)">🙂</div>
+          <div class="mb" onclick="selectMood(this)">😐</div>
+          <div class="mb" onclick="selectMood(this)">😟</div>
+          <div class="mb" onclick="selectMood(this)">😔</div>
+        </div>
+        <button class="btn btn-p" onclick="openModal('modal-mental')">Ver estratégias para ansiedade</button>
+      </div>
+      <div class="card">
+        <div class="clabel">Contexto emocional atual</div>
+        <div class="li"><div class="lic purple">💼</div><div class="lid"><strong>Nova função no trabalho</strong><span>Mudança + supervisor difícil. Pressão real, mas gerenciável.</span><div class="tags"><span class="tag amber">Atenção</span></div></div></div>
+        <div class="li"><div class="lic blue">🏠</div><div class="lid"><strong>Mudança para Olinda</strong><span>Fase temporária e estratégica do plano.</span><div class="tags"><span class="tag blue">Temporário</span></div></div></div>
+        <div class="li"><div class="lic coral">❤️</div><div class="lid"><strong>Maria Luiza</strong><span>Motivador positivo. Projeto de vida a dois.</span><div class="tags"><span class="tag green">Motivação</span></div></div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Rotina mental diária</div>
+        <div class="li"><div class="lic amber">☀️</div><div class="lid"><strong>Manhã — 5 min de intenção</strong><span>1 objetivo do dia + 1 coisa que você controla.</span></div></div>
+        <div class="li"><div class="lic blue">🧠</div><div class="lid"><strong>Respiração 4-7-8</strong><span>Inspira 4s, segura 7s, expira 8s. Antes de reuniões difíceis.</span></div></div>
+        <div class="li"><div class="lic purple">🌙</div><div class="lid"><strong>Noite — Revisão simples</strong><span>O que foi bom? O que aprendi hoje?</span></div></div>
+      </div>
+    </section>
+
+    <!-- FINANÇAS -->
+    <section class="sec" id="sec-finance">
+      <div class="card">
+        <div class="clabel">Distribuição mensal</div>
+        <div class="fbar">
+          <div style="flex:.5;background:rgba(59,130,246,.65);"></div>
+          <div style="flex:.35;background:rgba(52,211,153,.65);"></div>
+          <div style="flex:.1;background:rgba(251,191,36,.65);"></div>
+          <div style="flex:.05;background:rgba(248,113,113,.65);"></div>
+        </div>
+        <div class="fleg">
+          <div class="fli"><div class="fld" style="background:rgba(59,130,246,.7);"></div>50% Necessidades</div>
+          <div class="fli"><div class="fld" style="background:rgba(52,211,153,.7);"></div>35% Apartamento</div>
+          <div class="fli"><div class="fld" style="background:rgba(251,191,36,.7);"></div>10% Lazer</div>
+          <div class="fli"><div class="fld" style="background:rgba(248,113,113,.7);"></div>5% Emergência</div>
+        </div>
+        <div class="alert green" style="margin-top:14px;"><div class="alert-t">Vantagem: morando com avós</div><div class="alert-b">Aluguel zero = acelerar reserva para o apartamento.</div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Objetivos financeiros</div>
+        <div class="prow"><div class="plbl"><span>Reserva de emergência</span><span>—</span></div><div class="ptrack"><div class="pfill" style="width:0%;background:rgba(248,113,113,.6);"></div></div></div>
+        <div class="prow"><div class="plbl"><span>Entrada apartamento</span><span>—</span></div><div class="ptrack"><div class="pfill" style="width:0%;background:rgba(59,130,246,.6);"></div></div></div>
+        <div class="prow"><div class="plbl"><span>Fundo lazer</span><span>—</span></div><div class="ptrack"><div class="pfill" style="width:0%;background:rgba(251,191,36,.6);"></div></div></div>
+        <button class="btn btn-p" onclick="openModal('modal-finance')">Calcular meu planejamento</button>
+      </div>
+      <div class="card">
+        <div class="clabel">Gastos a controlar</div>
+        <div class="li"><div class="lic blue">🏋️</div><div class="lid"><strong>Academia Patteo</strong><span>Gasto fixo essencial. Não cortar.</span><div class="tags"><span class="tag blue">Saúde</span></div></div></div>
+        <div class="li"><div class="lic green">🥗</div><div class="lid"><strong>Alimentação saudável</strong><span>Evitar delivery frequente.</span><div class="tags"><span class="tag green">Prioridade</span></div></div></div>
+        <div class="li"><div class="lic amber">📱</div><div class="lid"><strong>Assinaturas digitais</strong><span>Auditar o que realmente usa.</span><div class="tags"><span class="tag amber">Revisar</span></div></div></div>
+        <div class="li"><div class="lic coral">🛒</div><div class="lid"><strong>Compras por impulso</strong><span>Regra dos 48h antes de comprar.</span><div class="tags"><span class="tag coral">Controle</span></div></div></div>
+      </div>
+    </section>
+
+    <!-- CASAL -->
+    <section class="sec" id="sec-casal">
+      <div class="card">
+        <div class="clabel">Momentos com Maria Luiza</div>
+        <div class="alert blue"><div class="alert-t">Qualidade acima de quantidade</div><div class="alert-b">Planejar os momentos juntos torna tudo mais especial e fortalece o relacionamento.</div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Ideias gratuitas ou econômicas</div>
+        <div class="cpi"><div class="cpn">1</div><div><strong>Pôr do sol no Recife Antigo</strong><span>Marco Zero, beira-mar. Gratuito e muito bonito.</span></div></div>
+        <div class="cpi"><div class="cpn">2</div><div><strong>Caminhada em Olinda histórica</strong><span>Pelourinho, igrejas, mirantes. Ótimo para reabilitação.</span></div></div>
+        <div class="cpi"><div class="cpn">3</div><div><strong>Piquenique em Casa Caiada</strong><span>Perto de Olinda. Econômico e memorável.</span></div></div>
+        <div class="cpi"><div class="cpn">4</div><div><strong>Noite de filmes em casa</strong><span>Cada um escolhe um. Cozinhem algo juntos.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Com um pouco mais de investimento</div>
+        <div class="cpi"><div class="cpn">5</div><div><strong>Jantar no Patteo</strong><span>Um restaurante diferente por mês.</span></div></div>
+        <div class="cpi"><div class="cpn">6</div><div><strong>Show ou teatro no Recife</strong><span>Boa programação, ingressos acessíveis.</span></div></div>
+        <div class="cpi"><div class="cpn">7</div><div><strong>Treinar juntos na academia</strong><span>Atividade física a dois é uma das melhores conexões.</span></div></div>
+        <div class="cpi"><div class="cpn">8</div><div><strong>Planejar o apartamento juntos</strong><span>Mood board, olhar imóveis — sonhar junto fortalece.</span></div></div>
+        <button class="btn btn-g" onclick="openModal('modal-casal')">Ver mais sugestões</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="ni active" onclick="showSec('perfil',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="ni-lbl">Perfil</span></button>
+    <button class="ni" onclick="showSec('treino',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 8h18M3 16h18"/></svg></div><span class="ni-lbl">Treino</span></button>
+    <button class="ni" onclick="showSec('nutri',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/></svg></div><span class="ni-lbl">Nutrição</span></button>
+    <button class="ni" onclick="showSec('fisio',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><span class="ni-lbl">Fisio</span></button>
+    <button class="ni" onclick="showSec('mental',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><path d="M9.5 2A6.5 6.5 0 0 1 16 8.5c0 2.1-.9 3.8-2.5 5l-1.5 1v1.5h-3V14.5l-1.5-1A6.5 6.5 0 0 1 9.5 2z"/><rect x="8.5" y="17" width="7" height="2" rx="1"/><rect x="9.5" y="20" width="5" height="2" rx="1"/></svg></div><span class="ni-lbl">Mental</span></button>
+    <button class="ni" onclick="showSec('finance',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><span class="ni-lbl">Finanças</span></button>
+    <button class="ni" onclick="showSec('casal',this)"><div class="ni-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span class="ni-lbl">Casal</span></button>
+  </nav>
+</div>
+
+<!-- ═══ MODAIS ═══ -->
+
+<!-- TREINO -->
+<div class="modal-bg" id="modal-treino" onclick="closeMaybe(event,'modal-treino')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-treino')">×</button>
+    <div class="modal-title">Plano de treino — Fase 1</div>
+    <div class="alert amber" style="margin-bottom:16px;"><div class="alert-t">Pós-artroplastia · Semanas 1–4</div><div class="alert-b">Foco em fortalecimento muscular e proteção articular. Sem impacto e sem cargas pesadas.</div></div>
+    <div class="modal-section">
+      <h3>Divisão semanal</h3>
+      <div class="day-plan">
+        <div class="day-card"><div class="dc-day">Segunda</div><div class="dc-title">Peito + Costas</div><div class="dc-sub">Supino c/ halteres, remada, voador</div></div>
+        <div class="day-card"><div class="dc-day">Terça</div><div class="dc-title">Cardio leve</div><div class="dc-sub">Bike 25 min, inclinação zero</div></div>
+        <div class="day-card"><div class="dc-day">Quarta</div><div class="dc-title">Ombro + Core</div><div class="dc-sub">Desenvolvimento, elevações, prancha</div></div>
+        <div class="day-card"><div class="dc-day">Quinta</div><div class="dc-title">Cardio leve</div><div class="dc-sub">Esteira 0–2%, 25 min</div></div>
+        <div class="day-card"><div class="dc-day">Sexta</div><div class="dc-title">Bíceps + Tríceps</div><div class="dc-sub">Rosca, extensão, corda</div></div>
+        <div class="day-card"><div class="dc-day">Sábado</div><div class="dc-title">Mobilidade</div><div class="dc-sub">Exercícios da fisioterapia</div></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Treino A — Peito e Costas</h3>
+      <div class="modal-item"><strong>Supino com halteres</strong><p>3 séries × 12 reps · Descanso: 60s</p><div class="detail">Amplitude controlada. Não force a descida além do conforto.</div></div>
+      <div class="modal-item"><strong>Remada com haltere</strong><p>3 × 12 cada lado · Descanso: 60s</p><div class="detail">Apoie o joelho no banco. Costas neutras.</div></div>
+      <div class="modal-item"><strong>Voador (pec deck)</strong><p>3 × 15 · Carga leve · Descanso: 45s</p></div>
+      <div class="modal-item"><strong>Pulldown (puxada)</strong><p>3 × 12 · Descanso: 60s</p><div class="detail">Puxe até o queixo. Não balance o tronco.</div></div>
+    </div>
+    <div class="modal-section">
+      <h3>Treino B — Ombro e Core</h3>
+      <div class="modal-item"><strong>Desenvolvimento com halteres</strong><p>3 × 12 · Descanso: 60s</p><div class="detail">Carga moderada. Sem arquear a lombar.</div></div>
+      <div class="modal-item"><strong>Elevação lateral</strong><p>3 × 15 · Carga leve · Descanso: 45s</p></div>
+      <div class="modal-item"><strong>Prancha frontal</strong><p>3 × 30s · Descanso: 30s</p><div class="detail">Corpo reto. Não eleve o quadril.</div></div>
+      <div class="modal-item"><strong>Crunch abdominal</strong><p>3 × 20 · Descanso: 30s</p></div>
+    </div>
+    <div class="modal-section">
+      <h3>Treino C — Bíceps e Tríceps</h3>
+      <div class="modal-item"><strong>Rosca direta com halteres</strong><p>3 × 12 · Descanso: 60s</p></div>
+      <div class="modal-item"><strong>Extensão de tríceps na corda</strong><p>3 × 15 · Descanso: 45s</p></div>
+      <div class="modal-item"><strong>Rosca martelo</strong><p>3 × 12 · Descanso: 60s</p></div>
+      <div class="modal-item"><strong>Tríceps testa</strong><p>3 × 12 · Carga leve · Descanso: 60s</p></div>
+    </div>
+    <div class="tip-box"><p>⚠ Membros inferiores ficam restritos nas semanas 1–4. Leg press, agachamento e afundo serão introduzidos gradualmente na Fase 2, com orientação médica.</p></div>
+  </div>
+</div>
+
+<!-- NUTRIÇÃO -->
+<div class="modal-bg" id="modal-nutri" onclick="closeMaybe(event,'modal-nutri')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-nutri')">×</button>
+    <div class="modal-title">Cardápio da semana</div>
+    <div class="modal-section">
+      <h3>Segunda e quinta</h3>
+      <div class="modal-item">
+        <strong>☀️ Café da manhã</strong>
+        <div class="food-row"><div><div class="food-name">Ovos mexidos (3)</div><div class="food-macro">Proteína · anti-inflamatório</div></div><div class="food-cal">210 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Pão integral (2 fatias)</div></div><div class="food-cal">160 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Fruta (banana ou mamão)</div></div><div class="food-cal">100 kcal</div></div>
+      </div>
+      <div class="modal-item">
+        <strong>🌤 Almoço</strong>
+        <div class="food-row"><div><div class="food-name">Frango grelhado (200g)</div><div class="food-macro">44g proteína</div></div><div class="food-cal">280 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Arroz integral (4 colheres)</div></div><div class="food-cal">200 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Feijão (1 concha)</div></div><div class="food-cal">150 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Salada verde + azeite</div></div><div class="food-cal">80 kcal</div></div>
+      </div>
+      <div class="modal-item">
+        <strong>🌙 Jantar</strong>
+        <div class="food-row"><div><div class="food-name">Salmão assado (150g)</div><div class="food-macro">Ômega-3 · anti-inflamatório</div></div><div class="food-cal">290 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Batata-doce (1 média)</div></div><div class="food-cal">130 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Brócolis refogado</div></div><div class="food-cal">60 kcal</div></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Terça e sexta</h3>
+      <div class="modal-item">
+        <strong>☀️ Café da manhã</strong>
+        <div class="food-row"><div><div class="food-name">Aveia com leite (50g)</div><div class="food-macro">Fibra · baixo IG</div></div><div class="food-cal">220 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Whey protein (1 scoop)</div><div class="food-macro">25g proteína</div></div><div class="food-cal">120 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Banana</div></div><div class="food-cal">90 kcal</div></div>
+      </div>
+      <div class="modal-item">
+        <strong>🌤 Almoço</strong>
+        <div class="food-row"><div><div class="food-name">Atum em lata (2 latas)</div><div class="food-macro">40g proteína</div></div><div class="food-cal">200 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Macarrão integral</div></div><div class="food-cal">240 kcal</div></div>
+        <div class="food-row"><div><div class="food-name">Tomate + azeite + cúrcuma</div><div class="food-macro">Anti-inflamatório</div></div><div class="food-cal">80 kcal</div></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Lanches diários</h3>
+      <div class="modal-item"><strong>Lanche manhã</strong><p>Iogurte grego natural (200g) + 1 fruta · ~200 kcal · 15g proteína</p></div>
+      <div class="modal-item"><strong>Lanche tarde</strong><p>Castanha-do-pará (4 unidades) + banana · ~150 kcal</p><div class="detail">Selênio das castanhas ajuda na recuperação articular.</div></div>
+    </div>
+    <div class="tip-box"><p>💧 Beba 3L de água por dia. Articulações dependem de hidratação para lubrificação sinovial — ainda mais importante na recuperação pós-cirurgia.</p></div>
+  </div>
+</div>
+
+<!-- FISIO -->
+<div class="modal-bg" id="modal-fisio" onclick="closeMaybe(event,'modal-fisio')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-fisio')">×</button>
+    <div class="modal-title">Como executar os exercícios</div>
+    <div class="modal-section">
+      <h3>1 — Mobilização articular suave</h3>
+      <div class="modal-item"><strong>Execução</strong><p>Deitado ou sentado, mova a articulação operada em toda amplitude disponível sem dor. Movimentos lentos e circulares. 5 minutos contínuos.</p><div class="detail">Frequência: diária. Melhor horário: manhã, antes de se levantar.</div></div>
+    </div>
+    <div class="modal-section">
+      <h3>2 — Fortalecimento do quadríceps</h3>
+      <div class="modal-item"><strong>Execução</strong><p>Deitado de costas, contraia o quadríceps pressionando a coxa contra o colchão. Segure 5 segundos, relaxe. 3 séries de 15 repetições.</p><div class="detail">Sem dor. Se sentir desconforto articular, reduza a intensidade.</div></div>
+    </div>
+    <div class="modal-section">
+      <h3>3 — Alongamento cadeia posterior</h3>
+      <div class="modal-item"><strong>Execução</strong><p>Deitado, segure a coxa e estique suavemente o joelho até sentir leve tensão atrás da perna. Segure 30 segundos cada lado. 3 repetições.</p><div class="detail">Respire normalmente. Não force além do ponto de tensão leve.</div></div>
+    </div>
+    <div class="modal-section">
+      <h3>4 — Equilíbrio unipodal</h3>
+      <div class="modal-item"><strong>Execução</strong><p>Em pé próximo a uma parede, eleve um pé e equilibre-se na perna de apoio por 20 segundos. Alterne. 3 séries cada lado.</p><div class="detail">Comece com o apoio da parede. Progrida para sem apoio quando sentir segurança.</div></div>
+    </div>
+    <div class="modal-section">
+      <h3>5 — Crioterapia (gelo)</h3>
+      <div class="modal-item"><strong>Quando usar</strong><p>Após treino ou exercícios, se sentir inchaço ou calor na articulação. Aplique gelo envolto em pano por 15–20 minutos.</p><div class="detail">Nunca aplique gelo diretamente na pele. Intervalo mínimo de 1h entre aplicações.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MENTAL -->
+<div class="modal-bg" id="modal-mental" onclick="closeMaybe(event,'modal-mental')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-mental')">×</button>
+    <div class="modal-title">Estratégias para ansiedade</div>
+    <div class="alert blue" style="margin-bottom:16px;"><div class="alert-t">Seu contexto atual</div><div class="alert-b">Nova função + supervisor difícil + mudança de cidade. É muita mudança ao mesmo tempo — faz sentido sentir pressão.</div></div>
+    <div class="modal-section">
+      <h3>Técnicas imediatas</h3>
+      <div class="strat-item"><div class="strat-num">1</div><div class="lid"><strong>Respiração 4-7-8</strong><span>Inspira pelo nariz por 4s, segura por 7s, expira pela boca por 8s. Repita 3 ciclos. Ativa o sistema nervoso parassimpático em menos de 2 minutos.</span></div></div>
+      <div class="strat-item"><div class="strat-num">2</div><div class="lid"><strong>Técnica 5-4-3-2-1</strong><span>Nomeie 5 coisas que vê, 4 que pode tocar, 3 sons, 2 cheiros, 1 sabor. Traz você para o presente imediato e interrompe o loop ansioso.</span></div></div>
+      <div class="strat-item"><div class="strat-num">3</div><div class="lid"><strong>Movimento físico</strong><span>10 minutos de caminhada ou qualquer movimento físico reduz cortisol (hormônio do estresse) de forma mensurável.</span></div></div>
+    </div>
+    <div class="modal-section">
+      <h3>Para lidar com o supervisor difícil</h3>
+      <div class="strat-item"><div class="strat-num">4</div><div class="lid"><strong>Desacople resultado de reação</strong><span>Você controla sua entrega, não a reação dele. Foque no que está dentro do seu círculo de controle.</span></div></div>
+      <div class="strat-item"><div class="strat-num">5</div><div class="lid"><strong>Documente tudo</strong><span>Acordos, feedbacks e metas por escrito. Reduz ambiguidade e protege você.</span></div></div>
+      <div class="strat-item"><div class="strat-num">6</div><div class="lid"><strong>Reserve 5 min de descompressão</strong><span>Após interações difíceis, não leve a tensão para o próximo momento. Respire, escreva como se sentiu, siga em frente.</span></div></div>
+    </div>
+    <div class="modal-section">
+      <h3>Rotina de equilíbrio mental</h3>
+      <div class="modal-item"><strong>Manhã — Intenção do dia</strong><p>Escreva 1 objetivo do dia e 1 coisa que você controla. Sai do modo reativo antes mesmo de começar.</p></div>
+      <div class="modal-item"><strong>Noite — Revisão rápida</strong><p>3 perguntas: O que foi bom hoje? O que aprendi? O que vou fazer diferente amanhã?</p></div>
+      <div class="modal-item"><strong>Âncora de segurança</strong><p>Maria Luiza, o plano do apartamento, a nova fase — lembre que a ansiedade é sinal de que você se importa com o que está construindo.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINANÇAS -->
+<div class="modal-bg" id="modal-finance" onclick="closeMaybe(event,'modal-finance')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-finance')">×</button>
+    <div class="modal-title">Calcular meu planejamento</div>
+    <div class="fin-input-row"><label>Salário líquido mensal (R$)</label><input class="fin-input" type="number" id="salario" placeholder="Ex: 4000" oninput="calcFin()"></div>
+    <div id="fin-results" style="display:none;">
+      <div class="mets" style="margin-bottom:14px;">
+        <div class="met"><div class="met-l">Necessidades</div><div class="met-v" style="font-size:18px;" id="fr-nec">—</div></div>
+        <div class="met"><div class="met-l">Apartamento</div><div class="met-v" style="font-size:18px;" id="fr-apt">—</div></div>
+        <div class="met"><div class="met-l">Lazer</div><div class="met-v" style="font-size:18px;" id="fr-laz">—</div></div>
+        <div class="met"><div class="met-l">Emergência</div><div class="met-v" style="font-size:18px;" id="fr-eme">—</div></div>
+      </div>
+      <div class="fin-result"><div class="fr-label">Reserva acumulada em 12 meses</div><div class="fr-val" id="fr-12m">—</div></div>
+      <div class="fin-result" style="margin-top:8px;background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.2);"><div class="fr-label" style="color:#93C5FD;">Estimativa para entrada (20% de R$250k)</div><div class="fr-val" style="color:#93C5FD;" id="fr-meses">—</div></div>
+    </div>
+    <div class="modal-section" style="margin-top:8px;">
+      <h3>Dicas para Olinda / Recife</h3>
+      <div class="modal-item"><strong>Período com avós = acelerador</strong><p>Sem aluguel, redirecione 100% da fatia de moradia para a entrada do apartamento. Este período é estratégico.</p></div>
+      <div class="modal-item"><strong>Prioridade dos primeiros meses</strong><p>1º construa a reserva de emergência (3–6 meses de gastos). 2º depois acelere a entrada. Sem reserva, qualquer imprevisto desfaz o plano.</p></div>
+      <div class="modal-item"><strong>Faixa de preço Olinda / Recife</strong><p>Apartamentos entre R$180k–R$320k dependendo do bairro. Entrada de 20% = R$36k–R$64k. Com disciplina, alcançável em 18–36 meses.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASAL -->
+<div class="modal-bg" id="modal-casal" onclick="closeMaybe(event,'modal-casal')">
+  <div class="modal" style="position:relative;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('modal-casal')">×</button>
+    <div class="modal-title">Mais sugestões a dois</div>
+    <div class="modal-section">
+      <h3>Experiências culturais</h3>
+      <div class="cpi"><div class="cpn">9</div><div><strong>Museu do Estado de Pernambuco</strong><span>Entrada gratuita. Arte e história de PE. Ótimo para um domingo de manhã.</span></div></div>
+      <div class="cpi"><div class="cpn">10</div><div><strong>Instituto Ricardo Brennand</strong><span>Um dos melhores museus do Brasil. Passeio especial e inesquecível.</span></div></div>
+      <div class="cpi"><div class="cpn">11</div><div><strong>Frevo e carnaval fora de época</strong><span>Olinda tem vida cultural o ano todo. Blocos e apresentações gratuitas.</span></div></div>
+    </div>
+    <div class="modal-section">
+      <h3>Natureza e lazer</h3>
+      <div class="cpi"><div class="cpn">12</div><div><strong>Praia de Porto de Galinhas</strong><span>Passeio de um dia. Piscinas naturais únicas. Custo: transporte + alimentação.</span></div></div>
+      <div class="cpi"><div class="cpn">13</div><div><strong>Parque Estadual de Dois Irmãos</strong><span>Trilhas, zoológico, natureza. Gratuito. Ótimo para reabilitação com caminhada leve.</span></div></div>
+      <div class="cpi"><div class="cpn">14</div><div><strong>Cais do Sertão</strong><span>Museu interativo, muito legal. Fica no Recife Antigo, perto de outros pontos.</span></div></div>
+    </div>
+    <div class="modal-section">
+      <h3>Experiências a planejar juntos</h3>
+      <div class="cpi"><div class="cpn">15</div><div><strong>Visitar imóveis juntos</strong><span>Transforme a busca pelo apartamento em um programa — sonhar junto fortalece o projeto de vida a dois.</span></div></div>
+      <div class="cpi"><div class="cpn">16</div><div><strong>Aula de culinária juntos</strong><span>Online ou presencial. Cozinhar juntos é uma das melhores formas de conexão.</span></div></div>
+      <div class="cpi"><div class="cpn">17</div><div><strong>Lista de desejos a dois</strong><span>Escrevam juntos 10 lugares que querem conhecer e 5 coisas que querem fazer em 2025. Cria cumplicidade e direção.</span></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSec(name,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+function handlePhoto(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const s=ev.target.result;
+    document.getElementById('av-h').innerHTML=`<img src="${s}" alt="">`;
+    document.getElementById('av-p').innerHTML=`<img src="${s}" alt="">`;
+    document.getElementById('phint').style.display='none';
+    document.getElementById('prem').style.display='block';
+  };
+  r.readAsDataURL(f);
+}
+function removePhoto(){
+  document.getElementById('av-h').innerHTML='<span>DV</span>';
+  document.getElementById('av-p').innerHTML='<span>DV</span>';
+  document.getElementById('phint').style.display='block';
+  document.getElementById('prem').style.display='none';
+  document.getElementById('phi').value='';
+  document.getElementById('ppi').value='';
+}
+function toggleCheck(row){
+  const c=row.querySelector('.ccirc'),t=row.querySelector('.ctxt');
+  c.classList.toggle('done'); t.classList.toggle('done');
+}
+function selectMood(btn){
+  document.querySelectorAll('.mb').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeMaybe(e,id){
+  if(e.target===document.getElementById(id)) closeModal(id);
+}
+function calcFin(){
+  const s=parseFloat(document.getElementById('salario').value);
+  const res=document.getElementById('fin-results');
+  if(!s||s<1){res.style.display='none';return;}
+  res.style.display='block';
+  const nec=Math.round(s*.5);
+  const apt=Math.round(s*.35);
+  const laz=Math.round(s*.10);
+  const eme=Math.round(s*.05);
+  const anual=apt*12;
+  const entrada=50000;
+  const meses=Math.ceil(entrada/apt);
+  document.getElementById('fr-nec').textContent='R$'+nec.toLocaleString('pt-BR');
+  document.getElementById('fr-apt').textContent='R$'+apt.toLocaleString('pt-BR');
+  document.getElementById('fr-laz').textContent='R$'+laz.toLocaleString('pt-BR');
+  document.getElementById('fr-eme').textContent='R$'+eme.toLocaleString('pt-BR');
+  document.getElementById('fr-12m').textContent='R$'+anual.toLocaleString('pt-BR');
+  document.getElementById('fr-meses').textContent=meses+' meses';
+}
+</script>
+</body>
+</html>
