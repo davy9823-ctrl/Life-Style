@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Davy — Lifestyle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --glass-bg: rgba(255,255,255,0.12);
+    --glass-bg-strong: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.28);
+    --glass-border-soft: rgba(255,255,255,0.14);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 0 rgba(255,255,255,0.22) inset;
+    --glass-shadow-lg: 0 20px 60px rgba(0,0,0,0.28), 0 1.5px 0 rgba(255,255,255,0.22) inset;
+    --text-primary: rgba(255,255,255,0.96);
+    --text-secondary: rgba(255,255,255,0.62);
+    --text-tertiary: rgba(255,255,255,0.38);
+    --accent-blue: #3B82F6;
+    --accent-blue-light: rgba(59,130,246,0.22);
+    --accent-green: #34D399;
+    --accent-amber: #FBBF24;
+    --accent-red: #F87171;
+    --accent-purple: #A78BFA;
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 26px;
+    --radius-xl: 36px;
+    --radius-full: 9999px;
+    --font: -apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, sans-serif;
+    --blur: blur(28px) saturate(180%);
+    --blur-light: blur(16px) saturate(160%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: var(--font);
+    background: #000;
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── MESH BACKGROUND ─── */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 70% at 15% 10%, #1a3a6e 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 85% 20%, #0d2a4a 0%, transparent 55%),
+      radial-gradient(ellipse 70% 80% at 50% 90%, #0c1f3a 0%, transparent 65%),
+      radial-gradient(ellipse 90% 60% at 30% 60%, #071a30 0%, transparent 70%),
+      #050e1a;
+  }
+
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    z-index: 0;
+    animation: orbFloat 12s ease-in-out infinite;
+  }
+  .bg-orb-1 { width: 520px; height: 520px; background: radial-gradient(circle, #1d4ed8, transparent 70%); top: -120px; left: -80px; animation-delay: 0s; }
+  .bg-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #0e7490, transparent 70%); top: 30%; right: -100px; animation-delay: -4s; }
+  .bg-orb-3 { width: 360px; height: 360px; background: radial-gradient(circle, #1e3a5f, transparent 70%); bottom: 5%; left: 20%; animation-delay: -8s; }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.04); }
+    66% { transform: translate(-20px, 15px) scale(0.97); }
+  }
+
+  /* ─── LAYOUT ─── */
+  .shell {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: 90px;
+  }
+
+  /* ─── GLASS CARD ─── */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow-lg);
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 16px 20px 14px;
+    background: rgba(5,14,26,0.55);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-bottom: 1px solid var(--glass-border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left { display: flex; flex-direction: column; gap: 1px; }
+  .header-greeting { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-primary); }
+  .header-sub { font-size: 12px; color: var(--text-secondary); letter-spacing: 0.1px; }
+
+  .avatar-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .avatar-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59,130,246,0.5), rgba(14,116,144,0.5));
+    border: 1.5px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; color: var(--text-primary);
+    overflow: hidden;
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+  }
+  .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-cam {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(59,130,246,0.9);
+    border: 1.5px solid rgba(5,14,26,0.8);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar-cam svg { width: 9px; height: 9px; fill: #fff; }
+
+  /* ─── CONTENT ─── */
+  .content { padding: 16px; }
+  .section { display: none; }
+  .section.active { display: block; animation: fadeUp 0.3s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 14px;
+  }
+
+  /* ─── PROFILE HERO ─── */
+  .profile-hero {
+    padding: 32px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(59,130,246,0.18), transparent 70%);
+    pointer-events: none;
+  }
+
+  .profile-avatar-wrap {
+    position: relative;
+    width: 96px; height: 96px;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .profile-avatar {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(14,116,144,0.4));
+    border: 2px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; font-weight: 600; color: var(--text-primary);
+    overflow: hidden;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.06), var(--glass-shadow);
+  }
+  .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .profile-cam {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(59,130,246,0.88);
+    backdrop-filter: var(--blur-light);
+    border: 2px solid rgba(5,14,26,0.6);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .profile-cam svg { width: 12px; height: 12px; fill: #fff; }
+
+  .profile-name { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .profile-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
+  .profile-upload-hint { font-size: 13px; color: var(--accent-blue); margin-top: 6px; cursor: pointer; }
+  .profile-remove { font-size: 12px; color: var(--text-tertiary); margin-top: 4px; cursor: pointer; background: none; border: none; color: var(--text-tertiary); display: none; }
+
+  /* ─── METRICS GRID ─── */
+  .metrics { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 14px; }
+  .metric {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--glass-border-soft);
+    border-radius: var(--radius-md);
+    padding: 14px 14px 12px;
+  }
+  .metric-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 5px; letter-spacing: 0.2px; }
+  .metric-value { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-primary); }
+  .metric-unit { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
+
+  /* ─── ALERT ─── */
+  .alert {
+    border-radius: var(--radius-md);
+    padding: 13px 14px;
+    margin-bottom: 12px;
+    border-left: 3px solid transparent;
+  }
+  .alert.blue { background: rgba(59,130,246,0.12); border-left-color: rgba(59,130,246,0.7); }
+  .alert.green { background: rgba(52,211,153,0.10); border-left-color: rgba(52,211,153,0.7); }
+  .alert.amber { background: rgba(251,191,36,0.10); border-left-color: rgba(251,191,36,0.7); }
+  .alert.red { background: rgba(248,113,113,0.10); border-left-color: rgba(248,113,113,0.7); }
+  .alert-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .alert.blue .alert-title { color: #93C5FD; }
+  .alert.green .alert-title { color: #6EE7B7; }
+  .alert.amber .alert-title { color: #FDE68A; }
+  .alert.red .alert-title { color: #FCA5A5; }
+  .alert-text { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+  /* ─── LIST ITEMS ─── */
+  .list-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .list-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .list-icon.blue { background: rgba(59,130,246,0.18); color: #93C5FD; }
+  .list-icon.green { background: rgba(52,211,153,0.15); color: #6EE7B7; }
+  .list-icon.amber { background: rgba(251,191,36,0.15); color: #FDE68A; }
+  .list-icon.purple { background: rgba(167,139,250,0.15); color: #C4B5FD; }
+  .list-icon.coral { background: rgba(248,113,113,0.12); color: #FCA5A5; }
+  .list-content strong { font-size: 14px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 2px; }
+  .list-content span { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+
+  /* ─── TAGS ─── */
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+  .tag {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 9px;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+  }
+  .tag.blue { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); color: #93C5FD; }
+  .tag.green { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.28); color: #6EE7B7; }
+  .tag.amber { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.28); color: #FDE68A; }
+  .tag.purple { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.28); color: #C4B5FD; }
+  .tag.coral { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); color: #FCA5A5; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: block; width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    border: none;
+    font-family: var(--font);
+    font-size: 15px; font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 8px;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active { transform: scale(0.97); opacity: 0.85; }
+  .btn-primary {
+    background: rgba(59,130,246,0.75);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid rgba(59,130,246,0.5);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.25);
+  }
+  .btn-glass {
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid var(--glass-border-soft);
+    color: var(--text-primary);
+  }
+
+  /* ─── PROGRESS ─── */
+  .progress-row { margin-bottom: 12px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .progress-track { height: 5px; background: rgba(255,255,255,0.10); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+
+  /* ─── DAY DOTS ─── */
+  .day-row { display: flex; gap: 7px; margin-bottom: 14px; }
+  .day-dot {
+    flex: 1; aspect-ratio: 1; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 600; letter-spacing: 0;
+  }
+  .day-dot.done { background: rgba(59,130,246,0.75); color: #fff; border: 1px solid rgba(59,130,246,0.5); }
+  .day-dot.today { background: rgba(255,255,255,0.08); color: #93C5FD; border: 1.5px solid rgba(59,130,246,0.6); }
+  .day-dot.rest { background: rgba(255,255,255,0.06); color: var(--text-tertiary); border: 1px solid rgba(255,255,255,0.1); }
+
+  /* ─── RING ─── */
+  .imc-row { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
+  .ring-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-val { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .ring-unit { font-size: 9px; color: var(--text-tertiary); }
+  .ring-info strong { font-size: 17px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .ring-info span { font-size: 12px; color: var(--text-secondary); display: block; line-height: 1.5; }
+
+  /* ─── CHECKLIST ─── */
+  .check-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+  }
+  .check-row:last-child { border-bottom: none; }
+  .check-circle {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s ease;
+  }
+  .check-circle.done { background: rgba(52,211,153,0.75); border-color: transparent; }
+  .check-circle svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 2.5; fill: none; display: none; }
+  .check-circle.done svg { display: block; }
+  .check-text { font-size: 13px; color: var(--text-primary); line-height: 1.4; }
+  .check-text.done { color: var(--text-tertiary); text-decoration: line-through; }
+
+  /* ─── MOOD ─── */
+  .mood-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .mood-btn {
+    flex: 1; padding: 11px 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.07);
+    font-size: 20px; cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mood-btn.selected {
+    border-color: rgba(59,130,246,0.5);
+    background: rgba(59,130,246,0.15);
+    transform: scale(1.05);
+  }
+
+  /* ─── FINANCE BAR ─── */
+  .fin-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 10px 0 8px; gap: 2px; }
+  .fin-bar div { border-radius: 2px; }
+  .fin-legend { display: flex; flex-wrap: wrap; gap: 10px; }
+  .fin-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-secondary); }
+  .fin-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ─── COUPLE CARDS ─── */
+  .couple-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .couple-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .couple-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(251,191,36,0.15);
+    border: 1px solid rgba(251,191,36,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #FDE68A;
+    flex-shrink: 0;
+  }
+  .couple-item strong { font-size: 14px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 2px; }
+  .couple-item span { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: rgba(5,14,26,0.72);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border-top: 1px solid var(--glass-border-soft);
+    display: flex;
+    padding: 10px 0 20px;
+    z-index: 100;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; padding: 4px 0;
+    border: none; background: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.15s;
+  }
+  .nav-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; transition: all 0.2s ease;
+  }
+  .nav-item.active .nav-icon {
+    background: rgba(59,130,246,0.2);
+  }
+  .nav-item svg { width: 20px; height: 20px; stroke: var(--text-tertiary); stroke-width: 1.8; fill: none; transition: stroke 0.2s; }
+  .nav-item.active svg { stroke: #93C5FD; }
+  .nav-label { font-size: 10px; color: var(--text-tertiary); transition: color 0.2s; }
+  .nav-item.active .nav-label { color: #93C5FD; }
+
+  /* ─── HIDDEN ─── */
+  input[type=file] { display: none; }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+</div>
+
+<div class="shell">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <div class="header-greeting">Olá, Davy</div>
+      <div class="header-sub">Semana 1 · Recuperação ativa</div>
+    </div>
+    <div class="avatar-btn" onclick="document.getElementById('photo-input-header').click()">
+      <div class="avatar-circle" id="avatar-header"><span>DV</span></div>
+      <div class="avatar-cam">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+    </div>
+    <input type="file" id="photo-input-header" accept="image/*" onchange="handlePhoto(event)">
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- PERFIL -->
+    <section class="section active" id="sec-perfil">
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="profile-hero">
+          <div class="profile-avatar-wrap" onclick="document.getElementById('photo-input-profile').click()">
+            <div class="profile-avatar" id="avatar-profile"><span>DV</span></div>
+            <div class="profile-cam">
+              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+          </div>
+          <input type="file" id="photo-input-profile" accept="image/*" onchange="handlePhoto(event)">
+          <div class="profile-name">Davy</div>
+          <div class="profile-sub">28 anos · 100 kg · 1,85 m</div>
+          <div class="profile-upload-hint" id="upload-hint" onclick="document.getElementById('photo-input-profile').click()">Adicionar foto de perfil</div>
+          <button class="profile-remove" id="remove-btn" onclick="removePhoto()">Remover foto</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Saúde</div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">IMC</div><div class="metric-value">29,2</div></div>
+          <div class="metric"><div class="metric-label">Classificação</div><div class="metric-value" style="font-size:16px;padding-top:4px;">Sobrepeso</div></div>
+          <div class="metric"><div class="metric-label">Meta de peso</div><div class="metric-value">85<span class="metric-unit"> kg</span></div></div>
+          <div class="metric"><div class="metric-label">A perder</div><div class="metric-value">15<span class="metric-unit"> kg</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Histórico</div>
+        <div class="list-item">
+          <div class="list-icon amber">🦴</div>
+          <div class="list-content"><strong>Artroplastia</strong><span>Pós-artronecrose. Fisioterapia concluída — 24 sessões.</span><div class="tags"><span class="tag green">Concluído</span><span class="tag amber">Em manutenção</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon blue">🏃</div>
+          <div class="list-content"><strong>Nível de atividade</strong><span>Sedentário — retorno gradual à academia Patteo.</span><div class="tags"><span class="tag blue">Fase 1</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon green">🥗</div>
+          <div class="list-content"><strong>Alimentação</strong><span>Sem restrições. Déficit calórico controlado.</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Objetivos de vida</div>
+        <div class="list-item">
+          <div class="list-icon blue">🏠</div>
+          <div class="list-content"><strong>Apartamento próprio</strong><span>Planejando entrada para compra em Olinda / Recife.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon purple">💼</div>
+          <div class="list-content"><strong>Nova fase profissional</strong><span>Desenvolvimento do setor digital — nova função.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon coral">❤️</div>
+          <div class="list-content"><strong>Morar com Maria Luiza</strong><span>Objetivo de médio prazo após estabilização financeira.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TREINO -->
+    <section class="section" id="sec-treino">
+      <div class="card">
+        <div class="card-label">Perfil físico</div>
+        <div class="imc-row">
+          <div class="ring-wrap">
+            <svg width="76" height="76" viewBox="0 0 76 76">
+              <circle cx="38" cy="38" r="30" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+              <circle cx="38" cy="38" r="30" fill="none" stroke="rgba(248,113,113,0.7)" stroke-width="8"
+                stroke-dasharray="188 188" stroke-dashoffset="47" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-center"><div class="ring-val">29,2</div><div class="ring-unit">IMC</div></div>
+          </div>
+          <div class="ring-info">
+            <strong>Sobrepeso leve</strong>
+            <span>100 kg · 1,85 m · 28 anos</span>
+            <span style="color:var(--text-tertiary);font-size:11px;">Meta: 85–90 kg</span>
+          </div>
+        </div>
+        <div class="alert amber">
+          <div class="alert-title">Artroplastia recente</div>
+          <div class="alert-text">Fisioterapia encerrada (24 sessões). Fase de transição — evitar impacto articular.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Plano — Fase 1 (semanas 1–4)</div>
+        <div class="list-item">
+          <div class="list-icon blue">🏋️</div>
+          <div class="list-content"><strong>Seg / Qua / Sex — Musculação adaptada</strong><span>Membros superiores + core. Sem cargas pesadas. Proteger articulação.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon green">🚶</div>
+          <div class="list-content"><strong>Ter / Qui — Cardio leve</strong><span>Esteira 0–2% inclinação, 20–30 min. Bike ergométrica sem resistência.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon amber">🧘</div>
+          <div class="list-content"><strong>Sáb — Mobilidade</strong><span>Exercícios herdados da fisioterapia. Manter amplitude.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon coral">🌙</div>
+          <div class="list-content"><strong>Dom — Descanso ativo</strong><span>Caminhada leve e alongamento.</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Semana atual</div>
+        <div class="day-row">
+          <div class="day-dot done">S</div><div class="day-dot done">T</div>
+          <div class="day-dot today">Q</div><div class="day-dot rest">Q</div>
+          <div class="day-dot rest">S</div><div class="day-dot rest">S</div><div class="day-dot rest">D</div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Sessões na semana</span><span>2 / 4</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:50%;background:rgba(59,130,246,0.7);"></div></div>
+        </div>
+        <button class="btn btn-primary" onclick="alert('Integrado ao chat principal')">Treino de hoje →</button>
+      </div>
+    </section>
+
+    <!-- NUTRIÇÃO -->
+    <section class="section" id="sec-nutri">
+      <div class="card">
+        <div class="card-label">Calorias diárias</div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Alvo</div><div class="metric-value">2.050<span class="metric-unit"> kcal</span></div></div>
+          <div class="metric"><div class="metric-label">Proteína</div><div class="metric-value">150<span class="metric-unit"> g</span></div></div>
+          <div class="metric"><div class="metric-label">Carboidratos</div><div class="metric-value">230<span class="metric-unit"> g</span></div></div>
+          <div class="metric"><div class="metric-label">Gorduras</div><div class="metric-value">60<span class="metric-unit"> g</span></div></div>
+        </div>
+        <div class="alert green">
+          <div class="alert-title">Déficit controlado</div>
+          <div class="alert-text">Meta de 0,5–1 kg/semana sem comprometer recuperação articular.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Alimentos prioritários</div>
+        <div class="list-item">
+          <div class="list-icon green">🍗</div>
+          <div class="list-content"><strong>Proteína magra</strong><span>Frango, peixe, ovos, atum, whey. Essencial para reparação articular.</span><div class="tags"><span class="tag green">Colágeno</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon blue">🐟</div>
+          <div class="list-content"><strong>Ômega-3 e anti-inflamatórios</strong><span>Salmão, sardinha, azeite, cúrcuma, gengibre.</span><div class="tags"><span class="tag blue">Anti-inflamatório</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon amber">🍠</div>
+          <div class="list-content"><strong>Carboidratos de baixo IG</strong><span>Arroz integral, batata-doce, aveia, feijão.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon purple">💧</div>
+          <div class="list-content"><strong>Hidratação</strong><span>Mínimo 3L de água por dia. Lubrificação sinovial.</span><div class="tags"><span class="tag purple">3L / dia</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Refeições de hoje</div>
+        <div class="progress-row"><div class="progress-label"><span>Café da manhã</span><span>500 kcal ✓</span></div><div class="progress-track"><div class="progress-fill" style="width:100%;background:rgba(52,211,153,0.6);"></div></div></div>
+        <div class="progress-row"><div class="progress-label"><span>Almoço</span><span>700 kcal ✓</span></div><div class="progress-track"><div class="progress-fill" style="width:100%;background:rgba(52,211,153,0.6);"></div></div></div>
+        <div class="progress-row"><div class="progress-label"><span>Lanche</span><span>300 kcal</span></div><div class="progress-track"><div class="progress-fill" style="width:50%;background:rgba(251,191,36,0.6);"></div></div></div>
+        <div class="progress-row"><div class="progress-label"><span>Jantar</span><span>—</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:rgba(59,130,246,0.6);"></div></div></div>
+        <button class="btn btn-primary" style="margin-top:4px;" onclick="alert('Integrado ao chat principal')">Cardápio da semana →</button>
+      </div>
+    </section>
+
+    <!-- FISIO -->
+    <section class="section" id="sec-fisio">
+      <div class="card">
+        <div class="card-label">Status pós-artroplastia</div>
+        <div class="alert green">
+          <div class="alert-title">✓ Fisioterapia concluída — 24 sessões</div>
+          <div class="alert-text">Fase de manutenção e fortalecimento progressivo. Parabéns pela conclusão.</div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">Fase atual</div><div class="metric-value" style="font-size:16px;padding-top:4px;">Transição</div></div>
+          <div class="metric"><div class="metric-label">Próxima revisão</div><div class="metric-value" style="font-size:16px;padding-top:4px;">30 dias</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Manutenção diária</div>
+        <div class="check-row" onclick="toggleCheck(this)">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="check-text">Mobilização articular suave — 5 min</span>
+        </div>
+        <div class="check-row" onclick="toggleCheck(this)">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="check-text">Fortalecimento do quadríceps — 3×15</span>
+        </div>
+        <div class="check-row" onclick="toggleCheck(this)">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="check-text">Alongamento cadeia posterior — 3×30s</span>
+        </div>
+        <div class="check-row" onclick="toggleCheck(this)">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="check-text">Equilíbrio unipodal — 3×20s cada perna</span>
+        </div>
+        <div class="check-row" onclick="toggleCheck(this)">
+          <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <span class="check-text">Crioterapia se sentir inchaço</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Sinais de alerta</div>
+        <div class="list-item">
+          <div class="list-icon coral">⚠️</div>
+          <div class="list-content"><strong>Dor aguda ou súbita</strong><span>Diferente da dor de esforço muscular normal.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon coral">⚠️</div>
+          <div class="list-content"><strong>Inchaço com calor local</strong><span>Sinal de processo inflamatório — consulte médico.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon coral">⚠️</div>
+          <div class="list-content"><strong>Amplitude que piora</strong><span>Mobilidade que regride é sinal de alerta.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENTAL -->
+    <section class="section" id="sec-mental">
+      <div class="card">
+        <div class="card-label">Como você está hoje?</div>
+        <div class="mood-row">
+          <div class="mood-btn" onclick="selectMood(this)">😊</div>
+          <div class="mood-btn" onclick="selectMood(this)">🙂</div>
+          <div class="mood-btn" onclick="selectMood(this)">😐</div>
+          <div class="mood-btn" onclick="selectMood(this)">😟</div>
+          <div class="mood-btn" onclick="selectMood(this)">😔</div>
+        </div>
+        <button class="btn btn-glass" onclick="alert('Integrado ao chat principal')">Conversar sobre como estou →</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Contexto emocional atual</div>
+        <div class="list-item">
+          <div class="list-icon purple">💼</div>
+          <div class="list-content"><strong>Nova função no trabalho</strong><span>Mudança + supervisor difícil. Pressão real, mas gerenciável.</span><div class="tags"><span class="tag amber">Atenção</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon blue">🏠</div>
+          <div class="list-content"><strong>Mudança para Olinda</strong><span>Fase temporária e estratégica do plano.</span><div class="tags"><span class="tag blue">Temporário</span></div></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon coral">❤️</div>
+          <div class="list-content"><strong>Maria Luiza</strong><span>Motivador positivo. Projeto de vida a dois.</span><div class="tags"><span class="tag green">Motivação</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Rotina mental diária</div>
+        <div class="list-item">
+          <div class="list-icon amber">☀️</div>
+          <div class="list-content"><strong>Manhã — 5 min de intenção</strong><span>1 objetivo do dia + 1 coisa que você controla.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon blue">🧠</div>
+          <div class="list-content"><strong>Respiração 4-7-8</strong><span>Inspira 4s, segura 7s, expira 8s. Antes de reuniões.</span></div>
+        </div>
+        <div class="list-item">
+          <div class="list-icon purple">🌙</div>
+          <div class="list-content"><strong>Noite — Revisão simples</strong><span>O que foi bom? O que aprendi hoje?</span></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:12px;" onclick="alert('Integrado ao chat principal')">Estratégias para ansiedade →</button>
+      </div>
+    </section>
+
+    <!-- FINANÇAS -->
+    <section class="section" id="sec-finance">
+      <div class="card">
+        <div class="card-label">Distribuição mensal recomendada</div>
+        <div class="fin-bar">
+          <div style="flex:0.5;background:rgba(59,130,246,0.65);"></div>
+          <div style="flex:0.35;background:rgba(52,211,153,0.65);"></div>
+          <div style="flex:0.1;background:rgba(251,191,36,0.65);"></div>
+          <div style="flex:0.05;background:rgba(248,113,113,0.65);"></div>
+        </div>
+        <div class="fin-legend">
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:rgba(59,130,246,0.7);"></div>50% Necessidades</div>
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:rgba(52,211,153,0.7);"></div>35% Apartamento</div>
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:rgba(251,191,36,0.7);"></div>10% Lazer</div>
+          <div class="fin-legend-item"><div class="fin-legend-dot" style="background:rgba(248,113,113,0.7);"></div>5% Emergência</div>
+        </div>
+        <div class="alert green" style="margin-top:14px;">
+          <div class="alert-title">Vantagem: morando com avós</div>
+          <div class="alert-text">Aluguel zero = oportunidade de acelerar a reserva para o apartamento.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Objetivos financeiros</div>
+        <div class="progress-row"><div class="progress-label"><span>Reserva de emergência</span><span>—</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:rgba(248,113,113,0.6);"></div></div></div>
+        <div class="progress-row"><div class="progress-label"><span>Entrada apartamento</span><span>—</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:rgba(59,130,246,0.6);"></div></div></div>
+        <div class="progress-row"><div class="progress-label"><span>Fundo lazer mensal</span><span>—</span></div><div class="progress-track"><div class="progress-fill" style="width:0%;background:rgba(251,191,36,0.6);"></div></div></div>
+        <button class="btn btn-glass" onclick="alert('Integrado ao chat principal')">Planejar minha meta →</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Gastos a controlar</div>
+        <div class="list-item"><div class="list-icon blue">🏋️</div><div class="list-content"><strong>Academia Patteo</strong><span>Gasto fixo essencial. Não cortar.</span><div class="tags"><span class="tag blue">Saúde</span></div></div></div>
+        <div class="list-item"><div class="list-icon green">🥗</div><div class="list-content"><strong>Alimentação saudável</strong><span>Evitar delivery frequente.</span><div class="tags"><span class="tag green">Prioridade</span></div></div></div>
+        <div class="list-item"><div class="list-icon amber">📱</div><div class="list-content"><strong>Assinaturas digitais</strong><span>Auditar o que realmente usa.</span><div class="tags"><span class="tag amber">Revisar</span></div></div></div>
+        <div class="list-item"><div class="list-icon coral">🛒</div><div class="list-content"><strong>Compras por impulso</strong><span>Regra dos 48h antes de comprar.</span><div class="tags"><span class="tag coral">Controle</span></div></div></div>
+      </div>
+    </section>
+
+    <!-- CASAL -->
+    <section class="section" id="sec-casal">
+      <div class="card">
+        <div class="card-label">Momentos com Maria Luiza</div>
+        <div class="alert blue">
+          <div class="alert-title">Qualidade acima de quantidade</div>
+          <div class="alert-text">Planejar os momentos juntos torna tudo mais especial e fortalece o relacionamento na nova fase.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Ideias gratuitas ou econômicas</div>
+        <div class="couple-item"><div class="couple-num">1</div><div><strong>Pôr do sol no Recife Antigo</strong><span>Marco Zero, beira-mar. Gratuito e muito bonito.</span></div></div>
+        <div class="couple-item"><div class="couple-num">2</div><div><strong>Caminhada em Olinda histórica</strong><span>Pelourinho, igrejas, mirantes. Ótimo para reabilitação.</span></div></div>
+        <div class="couple-item"><div class="couple-num">3</div><div><strong>Piquenique em Casa Caiada</strong><span>Perto de Olinda. Econômico e memorável.</span></div></div>
+        <div class="couple-item"><div class="couple-num">4</div><div><strong>Noite de filmes em casa</strong><span>Cada um escolhe um. Cozinhem algo juntos.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Com um pouco mais de investimento</div>
+        <div class="couple-item"><div class="couple-num">5</div><div><strong>Jantar no Patteo</strong><span>Um restaurante diferente por mês.</span></div></div>
+        <div class="couple-item"><div class="couple-num">6</div><div><strong>Show ou teatro no Recife</strong><span>Boa programação, ingressos acessíveis.</span></div></div>
+        <div class="couple-item"><div class="couple-num">7</div><div><strong>Treinar juntos na academia</strong><span>Atividade física a dois é uma das melhores conexões.</span></div></div>
+        <div class="couple-item"><div class="couple-num">8</div><div><strong>Planejar o apartamento juntos</strong><span>Mood board, olhar imóveis — sonhar junto fortalece.</span></div></div>
+        <button class="btn btn-primary" style="margin-top:4px;" onclick="alert('Integrado ao chat principal')">Mais sugestões →</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-item active" onclick="showSection('perfil',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <span class="nav-label">Perfil</span>
+    </button>
+    <button class="nav-item" onclick="showSection('treino',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 8h18M3 16h18"/></svg>
+      </div>
+      <span class="nav-label">Treino</span>
+    </button>
+    <button class="nav-item" onclick="showSection('nutri',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/></svg>
+      </div>
+      <span class="nav-label">Nutrição</span>
+    </button>
+    <button class="nav-item" onclick="showSection('fisio',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <span class="nav-label">Fisio</span>
+    </button>
+    <button class="nav-item" onclick="showSection('mental',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M9.5 2A6.5 6.5 0 0 1 16 8.5c0 2.1-.9 3.8-2.5 5l-1.5 1v1.5h-3V14.5l-1.5-1A6.5 6.5 0 0 1 9.5 2z"/><rect x="8.5" y="17" width="7" height="2" rx="1"/><rect x="9.5" y="20" width="5" height="2" rx="1"/></svg>
+      </div>
+      <span class="nav-label">Mental</span>
+    </button>
+    <button class="nav-item" onclick="showSection('finance',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      </div>
+      <span class="nav-label">Finanças</span>
+    </button>
+    <button class="nav-item" onclick="showSection('casal',this)">
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <span class="nav-label">Casal</span>
+    </button>
+  </nav>
+
+</div>
+
+<script>
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function handlePhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const src = ev.target.result;
+    document.getElementById('avatar-header').innerHTML = `<img src="${src}" alt="Foto">`;
+    document.getElementById('avatar-profile').innerHTML = `<img src="${src}" alt="Foto">`;
+    document.getElementById('upload-hint').style.display = 'none';
+    document.getElementById('remove-btn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  document.getElementById('avatar-header').innerHTML = '<span>DV</span>';
+  document.getElementById('avatar-profile').innerHTML = '<span>DV</span>';
+  document.getElementById('upload-hint').style.display = 'block';
+  document.getElementById('remove-btn').style.display = 'none';
+  document.getElementById('photo-input-header').value = '';
+  document.getElementById('photo-input-profile').value = '';
+}
+
+function toggleCheck(row) {
+  const circle = row.querySelector('.check-circle');
+  const text = row.querySelector('.check-text');
+  circle.classList.toggle('done');
+  text.classList.toggle('done');
+}
+
+function selectMood(btn) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+</script>
+</body>
+</html>
